@@ -7,28 +7,31 @@
     tools:context=".SignInUpActivity">
 
     <ImageView
+        android:id="@+id/iv"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:src="@drawable/backroundpic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintHeight_percent="0.25"
+        app:layout_constraintHeight_percent="0.27"
         android:scaleType="centerCrop"
         />
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.78 "
-        app:layout_constraintVertical_bias="1"
+        android:background="@drawable/vie_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.78 "
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/white">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
@@ -44,13 +47,14 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
+            android:background="@drawable/vie_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias="0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
