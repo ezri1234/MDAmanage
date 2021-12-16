@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MDAmanage">
         <activity
+            android:name=".RegularUserActivity"
+            android:exported="true" />
+        <activity
+            android:name=".adminActivity"
+            android:exported="true" />
+        <activity
             android:name=".SignInUpActivity"
             android:exported="true" />
         <activity

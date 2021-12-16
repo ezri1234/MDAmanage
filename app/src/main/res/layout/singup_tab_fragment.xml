@@ -75,12 +75,12 @@
         app:layout_constraintWidth_percent=".8" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/tv_bg"
         android:ems="10"
-        android:hint="Type of valunteer 1/2 manger/regular"
+        android:hint="Type of valunteer 0/1 manger/regular"
         android:inputType="number"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"

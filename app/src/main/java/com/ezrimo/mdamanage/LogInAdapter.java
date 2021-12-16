@@ -17,7 +17,6 @@ public class LogInAdapter extends FragmentPagerAdapter {
         this.totalTabs = totalTabs;
     }
 
-
     public Fragment getItem(int position){
         switch (position){
             case 0:

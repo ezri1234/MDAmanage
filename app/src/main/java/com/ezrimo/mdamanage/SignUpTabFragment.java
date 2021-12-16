@@ -1,27 +1,111 @@
 package com.ezrimo.mdamanage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpTabFragment extends Fragment {
     Button signupButton;
+    EditText email, id, type, password;
+    FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
+    boolean valid, isAdmin;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.singup_tab_fragment, container, false);
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+
         signupButton = root.findViewById(R.id.signupB);
+        email = root.findViewById(R.id.email);
+        id = root.findViewById(R.id.Id);
+        type = root.findViewById(R.id.type);
+        password = root.findViewById(R.id.Password);
+
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "signUp", Toast.LENGTH_SHORT).show();
+                checkField(email);
+                checkField(id);
+                checkField(type);
+                checkField(password);
+
+                isAdmin=false;
+                if(!(type.getText().toString().equals("1")||type.getText().toString().equals("0"))){
+                    Toast.makeText(getContext(), "enter only 1 or 0", Toast.LENGTH_SHORT).show();
+                    type.setError("Error");
+                    valid=false;
+                }
+
+                if(type.getText().toString().equals("1"))
+                    isAdmin = true;
+
+                if(valid){
+                    fAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            FirebaseUser user = fAuth.getCurrentUser();
+                            DocumentReference dr = fStore.collection("Users").document(user.getUid());
+                            Toast.makeText(root.getContext(), "signed up success", Toast.LENGTH_SHORT).show();
+                            Map<String, Object> userInfo = new HashMap<>();
+                            userInfo.put("userEmail", email.getText().toString());
+                            userInfo.put("idNumber", id.getText().toString());
+                            userInfo.put("password", password.getText().toString());
+                            //here we will specify if its admin
+                            if(isAdmin) {
+                                userInfo.put("isAdmin", "1");
+                                dr.set(userInfo);
+                                Intent go = new Intent(root.getContext(), adminActivity.class);
+                                startActivity(go);
+                                getActivity().finish();
+                            }else{
+                                userInfo.put("isUser", "1");
+                                dr.set(userInfo);
+                                Intent go = new Intent(root.getContext(), RegularUserActivity.class);
+                                startActivity(go);
+                                getActivity().finish();
+                            }
+
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(root.getContext(), "failed to create account", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
 
         return root;
+    }
+    public boolean checkField(EditText textField){
+        if(textField.getText().toString().isEmpty()){
+            textField.setError("Error");
+            valid = false;
+        } else {
+            valid = true;
+        }
+        return valid;
     }
 }
