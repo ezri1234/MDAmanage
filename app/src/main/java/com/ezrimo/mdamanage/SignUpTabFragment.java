@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class SignUpTabFragment extends Fragment {
     Button signupButton;
-    EditText email, id, type, password;
+    EditText email, fullName, type, password;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     boolean valid, isAdmin;
@@ -37,7 +37,7 @@ public class SignUpTabFragment extends Fragment {
 
         signupButton = root.findViewById(R.id.signupB);
         email = root.findViewById(R.id.email);
-        id = root.findViewById(R.id.Id);
+        fullName = root.findViewById(R.id.FullName);
         type = root.findViewById(R.id.type);
         password = root.findViewById(R.id.Password);
 
@@ -45,7 +45,7 @@ public class SignUpTabFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 checkField(email);
-                checkField(id);
+                checkField(fullName);
                 checkField(type);
                 checkField(password);
 
@@ -68,7 +68,7 @@ public class SignUpTabFragment extends Fragment {
                             Toast.makeText(root.getContext(), "signed up success", Toast.LENGTH_SHORT).show();
                             Map<String, Object> userInfo = new HashMap<>();
                             userInfo.put("userEmail", email.getText().toString());
-                            userInfo.put("idNumber", id.getText().toString());
+                            userInfo.put("fullName", fullName.getText().toString());
                             userInfo.put("password", password.getText().toString());
                             //here we will specify if its admin
                             if(isAdmin) {

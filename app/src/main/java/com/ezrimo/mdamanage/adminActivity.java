@@ -23,4 +23,8 @@ public class adminActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), SignInUpActivity.class));
         finish();
     }
+
+    public void Users(View view) {
+        startActivity(new Intent(this, RecycleViewAdmin.class));
+    }
 }
