@@ -11,7 +11,9 @@
         android:theme="@style/Theme.MDAmanage">
         <activity
             android:name=".RecycleViewAdmin"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
         <activity
             android:name=".RegularUserActivity"
             android:exported="true" />

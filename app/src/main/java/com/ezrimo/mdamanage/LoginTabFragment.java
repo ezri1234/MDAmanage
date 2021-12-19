@@ -77,12 +77,12 @@ public class LoginTabFragment extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("TAG", "on success" + documentSnapshot.getData());
 
-                if(documentSnapshot.getString("isAdmin")!=null){
+                if(documentSnapshot.getLong("isAdmin")==1){
                     //user is an admin
                     startActivity(new Intent(getContext(), adminActivity.class));
                     getActivity().finish();
                 }
-                if (documentSnapshot.getString("isUser")!=null){
+                if (documentSnapshot.getLong("isAdmin")==0){
                     //user isnt an admin
                     startActivity(new Intent (getActivity(), RegularUserActivity.class));
                     getActivity().finish();

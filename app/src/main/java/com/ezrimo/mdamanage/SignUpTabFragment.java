@@ -72,13 +72,13 @@ public class SignUpTabFragment extends Fragment {
                             userInfo.put("password", password.getText().toString());
                             //here we will specify if its admin
                             if(isAdmin) {
-                                userInfo.put("isAdmin", "1");
+                                userInfo.put("isAdmin", 1);
                                 dr.set(userInfo);
                                 Intent go = new Intent(root.getContext(), adminActivity.class);
                                 startActivity(go);
                                 getActivity().finish();
                             }else{
-                                userInfo.put("isUser", "1");
+                                userInfo.put("isAdmin", 0);
                                 dr.set(userInfo);
                                 Intent go = new Intent(root.getContext(), RegularUserActivity.class);
                                 startActivity(go);

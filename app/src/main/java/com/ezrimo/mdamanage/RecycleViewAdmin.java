@@ -51,12 +51,10 @@ public class RecycleViewAdmin extends AppCompatActivity {
 
     private void AddUserListener() {
 
-        db.collection("Users")
+        db.collection("Users").orderBy("isAdmin", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                        //e.getMessage();
-                        //Toast.makeText(getApplicationContext(), "error"+ e.getMessage(), Toast.LENGTH_SHORT).show();
                         if (e != null){
                             if(progressDialog.isShowing()){
                                 progressDialog.dismiss();
@@ -66,10 +64,10 @@ public class RecycleViewAdmin extends AppCompatActivity {
                         }
 
                         for (DocumentChange dc : value.getDocumentChanges()){
-                            //dc.getDocument().toObject(User.class);
-                            Toast.makeText(getApplicationContext(), "in the loop "+dc.getDocument().getString("isAdmin"), Toast.LENGTH_SHORT).show();
                             if (dc.getType() == DocumentChange.Type.ADDED){
-                              //  userArrayList.add(dc.getDocument().toObject(User.class));
+                                Log.d("TAG" ,dc.getDocument().getLong("isAdmin").toString());
+                                long isAdminFromFB = dc.getDocument().getLong("isAdmin") != null ? dc.getDocument().getLong("isAdmin") : 0;
+                                userArrayList.add(new User(dc.getDocument().getString("fullName"), dc.getDocument().getString("userEmail"), isAdminFromFB));
                             }
 
 
@@ -78,11 +76,8 @@ public class RecycleViewAdmin extends AppCompatActivity {
                                 progressDialog.dismiss();
                             }
 
-
                         }
                     }
-
-
 
                 });
 

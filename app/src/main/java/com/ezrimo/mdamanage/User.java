@@ -1,10 +1,17 @@
 package com.ezrimo.mdamanage;
 
+import java.util.Map;
+
 public class User {
     String fullName, userEmail;
-    long isAdmin, isUser;
+    long isAdmin;
 
     public User(){}
+
+    /*public User(Map<String, Object> map){
+        this.fullName = ((Map<String, String>) map).get("fullName");
+
+    }*/
 
     public User(String fullName, String userEmail, long isAdmin) {
         this.fullName = fullName;
