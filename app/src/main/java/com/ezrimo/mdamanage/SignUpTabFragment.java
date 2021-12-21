@@ -1,5 +1,7 @@
 package com.ezrimo.mdamanage;
 
+import static java.lang.Long.parseLong;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -48,7 +50,7 @@ public class SignUpTabFragment extends Fragment {
                 checkField(fullName);
                 checkField(type);
                 checkField(password);
-
+                User generalUser = new User(fullName.getText().toString(), email.getText().toString(), parseLong(type.getText().toString()));
                 isAdmin=false;
                 if(!(type.getText().toString().equals("1")||type.getText().toString().equals("0"))){
                     Toast.makeText(getContext(), "enter only 1 or 0", Toast.LENGTH_SHORT).show();
@@ -67,11 +69,11 @@ public class SignUpTabFragment extends Fragment {
                             DocumentReference dr = fStore.collection("Users").document(user.getUid());
                             Toast.makeText(root.getContext(), "signed up success", Toast.LENGTH_SHORT).show();
                             Map<String, Object> userInfo = new HashMap<>();
-                            userInfo.put("userEmail", email.getText().toString());
-                            userInfo.put("fullName", fullName.getText().toString());
-                            userInfo.put("password", password.getText().toString());
+                            userInfo.put("Users", generalUser);
+                            /*userInfo.put("fullName", generalUser.getFullName());
+                            userInfo.put("password", password.getText().toString());*/
                             //here we will specify if its admin
-                            if(isAdmin) {
+                            if(generalUser.getIsAdmin()==1) {
                                 userInfo.put("isAdmin", 1);
                                 dr.set(userInfo);
                                 Intent go = new Intent(root.getContext(), adminActivity.class);

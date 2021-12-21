@@ -1,5 +1,7 @@
 package com.ezrimo.mdamanage;
 
+import static java.lang.Long.parseLong;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class LoginTabFragment extends Fragment {
     Button loginButton;
@@ -61,6 +65,11 @@ public class LoginTabFragment extends Fragment {
         });
         return root;
     }
+    /*
+    checks if fields are acceptable
+    @par EditText
+    @returns boolean
+     */
     public boolean checkField(EditText textField){
         if(textField.getText().toString().isEmpty()){
             textField.setError("Error");
@@ -76,13 +85,15 @@ public class LoginTabFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("TAG", "on success" + documentSnapshot.getData());
-
-                if(documentSnapshot.getLong("isAdmin")==1){
+                HashMap<String, Object> usersMap = (HashMap<String, Object>) documentSnapshot.getData().get("Users");
+                Log.d("TAG", usersMap.get("fullName").toString());
+                //documentSnapshot.get("fullName");
+                if(parseLong(usersMap.get("isAdmin").toString())==1){
                     //user is an admin
                     startActivity(new Intent(getContext(), adminActivity.class));
                     getActivity().finish();
                 }
-                if (documentSnapshot.getLong("isAdmin")==0){
+                if (parseLong(usersMap.get("isAdmin").toString())==0){
                     //user isnt an admin
                     startActivity(new Intent (getActivity(), RegularUserActivity.class));
                     getActivity().finish();

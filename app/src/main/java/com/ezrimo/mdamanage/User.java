@@ -8,10 +8,6 @@ public class User {
 
     public User(){}
 
-    /*public User(Map<String, Object> map){
-        this.fullName = ((Map<String, String>) map).get("fullName");
-
-    }*/
 
     public User(String fullName, String userEmail, long isAdmin) {
         this.fullName = fullName;

@@ -1,5 +1,7 @@
 package com.ezrimo.mdamanage;
 
+import static java.lang.Long.parseLong;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecycleViewAdmin extends AppCompatActivity {
 
@@ -66,8 +69,8 @@ public class RecycleViewAdmin extends AppCompatActivity {
                         for (DocumentChange dc : value.getDocumentChanges()){
                             if (dc.getType() == DocumentChange.Type.ADDED){
                                 Log.d("TAG" ,dc.getDocument().getLong("isAdmin").toString());
-                                long isAdminFromFB = dc.getDocument().getLong("isAdmin") != null ? dc.getDocument().getLong("isAdmin") : 0;
-                                userArrayList.add(new User(dc.getDocument().getString("fullName"), dc.getDocument().getString("userEmail"), isAdminFromFB));
+                                HashMap<String, Object> usersMap = (HashMap<String, Object>) dc.getDocument().getData().get("Users");
+                                userArrayList.add( new User( usersMap.get("fullName").toString(), usersMap.get("userEmail").toString(), parseLong(usersMap.get("isAdmin").toString())));
                             }
 
 
