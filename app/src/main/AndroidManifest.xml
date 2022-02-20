@@ -10,10 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MDAmanage">
         <activity
+            android:name=".Assign"
+            android:exported="true" />
+        <activity
             android:name=".RecycleViewAdmin"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".RegularUserActivity"
             android:exported="true" />

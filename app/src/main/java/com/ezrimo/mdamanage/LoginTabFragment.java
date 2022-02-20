@@ -90,12 +90,16 @@ public class LoginTabFragment extends Fragment {
                 //documentSnapshot.get("fullName");
                 if(parseLong(usersMap.get("isAdmin").toString())==1){
                     //user is an admin
-                    startActivity(new Intent(getContext(), adminActivity.class));
+                    Intent go = new Intent(getActivity(), adminActivity.class);
+                    go.putExtra("uid", uid);
+                    startActivity(go);
                     getActivity().finish();
                 }
                 if (parseLong(usersMap.get("isAdmin").toString())==0){
                     //user isnt an admin
-                    startActivity(new Intent (getActivity(), RegularUserActivity.class));
+                    Intent go = new Intent (getActivity(), Assign.class);
+                    go.putExtra("uid", uid);
+                    startActivity(go);
                     getActivity().finish();
                 }
             }
