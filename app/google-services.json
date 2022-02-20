@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "250839316558",
+    "project_id": "mdamang-e9c70",
+    "storage_bucket": "mdamang-e9c70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250839316558:android:b4f18f2136f9df6b7c2b1f",
+        "android_client_info": {
+          "package_name": "com.ezmo.mdamanage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "250839316558-ljp9b471bnotqa6ktcni9rfn5kroo2au.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB1Ri5xu84AcE9McHU58nquElCWn-t9KI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "250839316558-ljp9b471bnotqa6ktcni9rfn5kroo2au.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250839316558:android:b572d831434428947c2b1f",
+        "android_client_info": {
+          "package_name": "com.ezrimo.mdamanage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "250839316558-ljp9b471bnotqa6ktcni9rfn5kroo2au.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB1Ri5xu84AcE9McHU58nquElCWn-t9KI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "250839316558-ljp9b471bnotqa6ktcni9rfn5kroo2au.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

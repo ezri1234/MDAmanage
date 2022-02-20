@@ -11,20 +11,32 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class adminActivity extends AppCompatActivity {
     Button logout;
+    String uid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        uid = getIntent().getStringExtra("uid");
         }
 
     public void logout(View view) {
         logout=findViewById(R.id.logoutAdmin);
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), SignInUpActivity.class));
+        Intent go = new Intent(getApplicationContext(), SignInUpActivity.class);
+        go.putExtra("uid", uid);
+        startActivity(go);
         finish();
     }
 
     public void Users(View view) {
-        startActivity(new Intent(this, RecycleViewAdmin.class));
+        Intent go = new Intent(getApplicationContext(), RecycleViewAdmin.class);
+        go.putExtra("uid", uid);
+        startActivity(go);
+    }
+
+    public void Calendar(View view) {
+        Intent go = new Intent(getApplicationContext(), Assign.class);//for now assing but it will go to calendar
+        go.putExtra("uid", uid);
+        startActivity(go);
     }
 }
