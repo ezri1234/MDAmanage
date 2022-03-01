@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +32,7 @@ import java.util.Map;
 public class Assign extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     EditText name;
     TextView date;
-    Button btEnter;
+    Button btEnter, btAssign;
     Date finalDate;
     FirebaseFirestore fStore;
     boolean exist = false;
@@ -42,9 +44,15 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
         name = findViewById(R.id.etName);
         date = findViewById(R.id.date);
         btEnter = findViewById(R.id.btEnter);
+        btAssign = findViewById(R.id.assign);
 
-        Intent get = getIntent();
-        String thisUid = get.getStringExtra("uid");
+
+        SharedPreferences sr = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
+        boolean isAdmin= sr.getBoolean("isAdmin", false);
+        String thisUid = sr.getString("uid", "");
+        Event myEvent = new Event(finalDate, thisUid);
+
+        Log.d("TAG", thisUid);
 
         findViewById(R.id.btCalander).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,9 +63,12 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
         btEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(finalDate.equals(null))
+                if(finalDate.equals(null)){
                     date.setError("enter date");
-                Event myEvent = new Event(finalDate, thisUid);
+                }
+                if(date.equals(null))
+
+                myEvent.setDate(finalDate);
                 DocumentReference drUser = fStore.collection("Users").document(thisUid);
                 DocumentReference drNewEvent = fStore.collection("Event").document();
                 drUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -82,6 +93,15 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
 
             }
         });
+        btAssign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isAdmin){
+                    myEvent.setUid(thisUid);
+
+                }
+            }
+        });
 
 
 
@@ -100,9 +120,10 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        String chosenDate = " "+i+"/"+(i1+1)+"/"+i2;
+        String chosenDate = " "+i+"/"+(i1+1)+"/"+(i2-1900);
         date.setText(chosenDate);
         finalDate = new Date(i, i1, i2);
         Toast.makeText(this,  finalDate.toString(), Toast.LENGTH_SHORT).show();
     }
+
 }

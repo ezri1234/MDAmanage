@@ -2,7 +2,9 @@ package com.ezrimo.mdamanage;
 
 import static java.lang.Long.parseLong;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ public class LoginTabFragment extends Fragment {
     boolean valid;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
+    SharedPreferences sp;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.login_tab_fragment, container, false);
@@ -80,6 +83,7 @@ public class LoginTabFragment extends Fragment {
         return valid;
     }
     public void isAdmin (String uid) {
+        sp = getContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         DocumentReference dr = fStore.collection("Users").document(uid);
         dr.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -88,15 +92,23 @@ public class LoginTabFragment extends Fragment {
                 HashMap<String, Object> usersMap = (HashMap<String, Object>) documentSnapshot.getData().get("Users");
                 Log.d("TAG", usersMap.get("fullName").toString());
                 //documentSnapshot.get("fullName");
+                SharedPreferences.Editor editor = sp.edit();
+
                 if(parseLong(usersMap.get("isAdmin").toString())==1){
-                    //user is an admin
+                    editor.putString("uid", uid);
+                    editor.putBoolean("isAdmin", true);
+                    editor.commit();
                     Intent go = new Intent(getActivity(), adminActivity.class);
                     go.putExtra("uid", uid);
                     startActivity(go);
                     getActivity().finish();
                 }
+
                 if (parseLong(usersMap.get("isAdmin").toString())==0){
                     //user isnt an admin
+                    editor.putString("uid", uid);
+                    editor.putBoolean("isAdmin", false);
+                    editor.commit();
                     Intent go = new Intent (getActivity(), Assign.class);
                     go.putExtra("uid", uid);
                     startActivity(go);
