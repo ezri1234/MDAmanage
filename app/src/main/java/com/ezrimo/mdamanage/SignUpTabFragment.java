@@ -66,10 +66,11 @@ public class SignUpTabFragment extends Fragment {
                         @Override
                         public void onSuccess(AuthResult authResult) {
                             FirebaseUser user = fAuth.getCurrentUser();
-                            DocumentReference dr = fStore.collection("Users").document(user.getUid());
+                            DocumentReference dr = fStore.collection("User").document(user.getUid());
                             Toast.makeText(root.getContext(), "signed up success", Toast.LENGTH_SHORT).show();
                             Map<String, Object> userInfo = new HashMap<>();
-                            userInfo.put("Users", generalUser);
+                            userInfo.put("fullName", generalUser.getFullName());
+                            userInfo.put("email", generalUser.getEmail());
                             /*userInfo.put("fullName", generalUser.getFullName());
                             userInfo.put("password", password.getText().toString());*/
                             //here we will specify if its admin

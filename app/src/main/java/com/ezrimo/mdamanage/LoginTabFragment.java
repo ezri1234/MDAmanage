@@ -84,17 +84,39 @@ public class LoginTabFragment extends Fragment {
     }
     public void isAdmin (String uid) {
         sp = getContext().getSharedPreferences("User", Context.MODE_PRIVATE);
-        DocumentReference dr = fStore.collection("Users").document(uid);
+        DocumentReference dr = fStore.collection("User").document(uid);
         dr.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Log.d("TAG", "on success" + documentSnapshot.getData());
-                HashMap<String, Object> usersMap = (HashMap<String, Object>) documentSnapshot.getData().get("Users");
-                Log.d("TAG", usersMap.get("fullName").toString());
-                //documentSnapshot.get("fullName");
+                Log.d("TAG", "on success " + documentSnapshot.getData());
+                //HashMap<String, Object> usersMap = (HashMap<String, Object>) documentSnapshot.getData().get("Users");
+                //Log.d("TAG", usersMap.get("fullName").toString());
+                Log.d("TAG", documentSnapshot.get("fullName").toString());
                 SharedPreferences.Editor editor = sp.edit();
 
-                if(parseLong(usersMap.get("isAdmin").toString())==1){
+                if(parseLong(documentSnapshot.get("isAdmin").toString())==1) {
+                    editor.putString("uid", uid);
+                    editor.putBoolean("isAdmin", true);
+                    editor.commit();
+                    Intent go = new Intent(getActivity(), adminActivity.class);
+                    go.putExtra("uid", uid);
+                    startActivity(go);
+                    getActivity().finish();
+                }
+
+                if(parseLong(documentSnapshot.get("isAdmin").toString())==1){
+                    //user isnt an admin
+                    editor.putString("uid", uid);
+                    editor.putBoolean("isAdmin", false);
+                    editor.commit();
+                    Intent go = new Intent (getActivity(), Assign.class);
+                    go.putExtra("uid", uid);
+                    startActivity(go);
+                    getActivity().finish();
+                }
+
+
+                /*if(parseLong(usersMap.get("isAdmin").toString())==1){//for Users
                     editor.putString("uid", uid);
                     editor.putBoolean("isAdmin", true);
                     editor.commit();
@@ -113,7 +135,7 @@ public class LoginTabFragment extends Fragment {
                     go.putExtra("uid", uid);
                     startActivity(go);
                     getActivity().finish();
-                }
+                }*/
             }
         });
 

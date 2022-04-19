@@ -3,7 +3,7 @@ package com.ezrimo.mdamanage;
 import java.util.Map;
 
 public class User {
-    String fullName, userEmail;
+    String fullName, email;
     long isAdmin;
 
     public User(){}
@@ -11,7 +11,7 @@ public class User {
 
     public User(String fullName, String userEmail, long isAdmin) {
         this.fullName = fullName;
-        this.userEmail = userEmail;
+        this.email = userEmail;
         this.isAdmin = isAdmin;
     }
 
@@ -23,12 +23,12 @@ public class User {
         this.fullName = fullName;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getEmail() {
+        return email;
     }
 
     public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+        this.email = userEmail;
     }
 
     public long getIsAdmin() {

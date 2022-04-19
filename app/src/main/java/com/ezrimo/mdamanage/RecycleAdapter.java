@@ -37,7 +37,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
         User user = userArrayList.get(position);
 
         holder.fullName.setText(user.fullName);
-        holder.userEmail.setText(user.userEmail);
+        holder.userEmail.setText(user.email);
         holder.isAdmin.setText(String.valueOf(user.isAdmin));
 
     }
@@ -53,7 +53,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             fullName = itemView.findViewById(R.id.fullName);
-            userEmail = itemView.findViewById(R.id.userEmail);
+            userEmail = itemView.findViewById(R.id.email);
             isAdmin = itemView.findViewById(R.id.isAdmin);
         }
     }
