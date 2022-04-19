@@ -125,7 +125,8 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                     }
                 });//checks for the user
                 Map<String, Object> userInfo = new HashMap<>();
-                userInfo.put("Event", myEvent);
+                userInfo.put("uid", myEvent.getUid());
+                userInfo.put("date", myEvent.getDate());
                 drNewEvent.set(userInfo);
 
             }
@@ -134,20 +135,21 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
         btAssign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("TAG", "assigned");
                 if(!isAdmin){
                     myEvent.setUid(thisUid);
+                    Intent go = new Intent(getApplicationContext(), ChooseUser.class);
+                    startActivity(go);
                 }
                 Timestamp ts = new Timestamp(myEvent.getDate());
                 Log.d("TAG", ts.toString());
-                fStore.collection("Event")
-                        .whereArrayContains("uid", thisUid)
+                /*fStore.collection("Event")
+                        .whereEqualTo("uid", thisUid)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    Log.d("TAG", "success");
+
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Log.d("TAG", document.getId() + " => " + document.getData());
                                     }
@@ -155,7 +157,7 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                                     Log.d("TAG", "Error getting documents: ", task.getException());
                                 }
                             }
-                        });
+                        });*/ //ths works, i get the timestamp by uid
             }
         });
 

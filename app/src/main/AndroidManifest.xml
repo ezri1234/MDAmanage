@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MDAmanage">
         <activity
+            android:name=".ChooseUser"
+            android:exported="true" />
+        <activity
             android:name=".Assign"
             android:exported="true" />
         <activity
