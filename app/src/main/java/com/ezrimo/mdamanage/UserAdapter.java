@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.UserHolder>{
 
-
+    onItemClickListener listener;
     public UserAdapter(@NonNull FirestoreRecyclerOptions<User> options) {
         super(options);
     }
@@ -32,8 +34,15 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
     public UserHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item,
                 parent, false);
-
         return new UserHolder(v);
+    }
+
+    public void deleteItem(int position){
+        getSnapshots().getSnapshot(position).getReference().delete();
+    }
+
+    public String getUid(int position){
+        return getSnapshots().getSnapshot(position).getId();
     }
 
     class UserHolder extends RecyclerView.ViewHolder{
@@ -44,7 +53,27 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
             tvUserName = itemView.findViewById(R.id.fullName);
             tvEmail = itemView.findViewById(R.id.email);
             tvIsAdmin = itemView.findViewById(R.id.isAdmin);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener!=null){
+                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
+                    }
+
+                }
+            });
+
         }
     }
 
+    public interface onItemClickListener{
+        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+    }
+
+    public void setOnclickItemListener(onItemClickListener listener){
+
+        this.listener =listener;
+    }
 }

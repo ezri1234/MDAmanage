@@ -104,7 +104,7 @@ public class LoginTabFragment extends Fragment {
                     getActivity().finish();
                 }
 
-                if(parseLong(documentSnapshot.get("isAdmin").toString())==1){
+                if(parseLong(documentSnapshot.get("isAdmin").toString())!=1){
                     //user isnt an admin
                     editor.putString("uid", uid);
                     editor.putBoolean("isAdmin", false);

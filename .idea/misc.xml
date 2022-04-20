@@ -16,10 +16,12 @@
         <entry key="..\:/Users/ezrim/AndroidStudioProjects/MDAmanage2/app/src/main/res/layout/activity_recycle_view_admin.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/ezrim/AndroidStudioProjects/MDAmanage2/app/src/main/res/layout/activity_regular_user.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/ezrim/AndroidStudioProjects/MDAmanage2/app/src/main/res/layout/activity_sign_in_up.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/ezrim/AndroidStudioProjects/MDAmanage2/app/src/main/res/layout/activity_user_info.xml" value="0.33" />
         <entry key="..\:/Users/ezrim/AndroidStudioProjects/MDAmanage2/app/src/main/res/layout/item.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/ezrim/AndroidStudioProjects/MDAmanage2/app/src/main/res/layout/login_tab_fragment.xml" value="0.849609375" />
+        <entry key="..\:/Users/ezrim/AndroidStudioProjects/MDAmanage2/app/src/main/res/layout/login_tab_fragment.xml" value="0.33" />
         <entry key="..\:/Users/ezrim/AndroidStudioProjects/MDAmanage2/app/src/main/res/layout/singup_tab_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/ezrim/AndroidStudioProjects/MDAmanage2/app/src/main/res/layout/user_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/ezrim/AndroidStudioProjects/MDAmanage2/app/src/main/res/menu/search_user.xml" value="0.36614583333333334" />
       </map>
     </option>
   </component>

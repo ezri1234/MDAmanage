@@ -12,6 +12,7 @@
         app:layout_constraintWidth_percent=".8"
         app:layout_constraintVertical_bias=".3"
         android:hint="Email"
+        android:inputType="textEmailAddress"
         android:paddingLeft="20dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
