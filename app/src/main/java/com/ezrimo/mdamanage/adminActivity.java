@@ -34,7 +34,6 @@ public class adminActivity extends AppCompatActivity {
     public void Users(View view) {
         Intent go = new Intent(getApplicationContext(), ChooseUser.class);
         go.putExtra("uid", uid);
-        go.putExtra("fromAdmin", true);
         startActivity(go);
     }
 

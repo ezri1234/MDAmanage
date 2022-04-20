@@ -194,6 +194,7 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent go = new Intent(getApplicationContext(), ChooseUser.class);
+                            go.putExtra("fromAdmin", true);
                             startActivity(go);
                             finish();
                         }
