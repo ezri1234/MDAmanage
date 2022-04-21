@@ -40,6 +40,7 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
     }
 
     private void setUpRecView() {
+        long date = getIntent().getLongExtra("date", 62419651056000L);
         Query query = userRef.orderBy("email", Query.Direction.ASCENDING);
         Log.d("TAG", query.toString());
         boolean fromAdmin = getIntent().getBooleanExtra("fromAdmin", false);
@@ -63,10 +64,12 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                     Intent go = new Intent(getApplicationContext(), Assign.class);
+                    go.putExtra("date", date);
                     Log.d("TAG", "chosen uid " + adapter.getUid(viewHolder.getAbsoluteAdapterPosition()));
                     go.putExtra("uid", adapter.getUid(viewHolder.getAbsoluteAdapterPosition()));
                     go.putExtra("chosenUid", true);
                     startActivity(go);
+                    finish();
                 }
             }).attachToRecyclerView(recyclerView);
         }

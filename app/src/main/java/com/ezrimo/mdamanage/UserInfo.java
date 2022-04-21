@@ -86,11 +86,11 @@ public class UserInfo extends AppCompatActivity {
                             numberOfShifts.setText(Integer.toString(count));
                             long intTime[] = new long[count];
                             for(int k = 0; k<intTime.length; k++){
-                                intTime[k] = dArray[k].getTime();
+                                intTime[k] = dArray[k].getTime()/10000;
                                 Log.d("TAG", Long.toString(intTime[k]));
                             }
                             Log.d("TAG", "random");
-
+                            Arrays.sort(intTime);
                             for(int j = 0; j<intTime.length; j++){
                                 Log.d("TAG", Long.toString(intTime[j]));
                             }
@@ -109,15 +109,22 @@ public static String LastShift(long[] arr){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date lastShift;
         Arrays.sort(arr);
-            long date = today.getTime();
+            long date = today.getTime()/10000;
 
             //Log.d("TAG", Long.toString(date));
             //Log.d("TAG", Long.toString(arr[0]));
-            if(arr.length==0||date<=arr[0]-59958159400001l)
+            if(arr.length==0||date<=arr[0]-5995815940l)
                 return "No Shifts Before Today";
-            for(int i = 0; i< arr.length; i++){
-                if(!(date>arr[i]-(59958159400001l)&&date>arr[i+1]-(59958159400001l))){
-                    lastShift = new Date(arr[i]-59958159400001l);
+            if(arr.length==1)
+                if(arr[0]-5995815940L<date) {
+                    lastShift = new Date(arr[0]*10000 - 59958159400001l+86400000L);
+                    return formatter.format(lastShift);
+                }else{
+                    return "No Shifts Before Today";
+                }
+            for(int i = 1; i< arr.length; i++){
+                if(!(date>arr[i-1]-(5995815940l)&&date>arr[i]-(5995815940l))){
+                    lastShift = new Date((arr[i-1]*10000-59958159400001l)+86400000L);
                     return formatter.format(lastShift);
                 }
             }
@@ -129,15 +136,20 @@ public static String LastShift(long[] arr){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date lastShift;
         Arrays.sort(arr);
-        long date = today.getTime();
+        long date = today.getTime()/10000;
 
-        //Log.d("TAG", Long.toString(date));
-        //Log.d("TAG", Long.toString(arr[0]));
-        if(arr.length==0||date>=arr[arr.length-1]-59958159400001l)
+        if(arr.length==0||date>=arr[arr.length-1]-5995815940l)
             return "No Upcoming Shifts";
+        if(arr.length==1)
+            if(arr[0]-5995815940L>date) {
+                lastShift = new Date(arr[0]*10000 - 59958159400001l+86400000L);
+                return formatter.format(lastShift);
+            }else{
+                return "No Upcoming Shifts";
+            }
         for(int i = 1; i< arr.length; i++){
-            if(!(date<arr[i-1]-(59958159400001l)&&date<arr[i]-(59958159400001l))){
-                lastShift = new Date(arr[i]-59958159400001l);
+            if(!(date<arr[i-1]-(59958159400l)&&date<arr[i]-(5995815940l))){
+                lastShift = new Date(arr[i]*10000-59958159400001l+86400000L);
                 return formatter.format(lastShift);
             }
         }

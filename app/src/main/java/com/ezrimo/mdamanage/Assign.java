@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.StringValue;
 import com.google.protobuf.StringValueOrBuilder;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
         btEnter = findViewById(R.id.btEnter);
         btAssign = findViewById(R.id.assign);
 
-
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         SharedPreferences sr = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         boolean isAdmin = sr.getBoolean("isAdmin", false);
         String thisUid = sr.getString("uid", "");
@@ -61,6 +62,10 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
 
         String uid = getIntent().getStringExtra("uid");
         chosenUid = getIntent().getBooleanExtra("chosenUid", false);
+        long dateNum = ((getIntent().getLongExtra("date", 62419651056000L)) - 59958159400001L) + 86400000L;
+        Date thisDate = new Date(dateNum);
+        date.setText(formatter.format(thisDate));
+        finalDate = new Date(getIntent().getLongExtra("date", 62419651056000L));
         Log.d("TAG", Boolean.toString(chosenUid));
         Log.d("TAG", thisUid);
         Log.d("TAG", uid);
@@ -69,6 +74,9 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
         {
             myEvent.setUid(uid);
             DocumentReference drUser = fStore.collection("User").document(uid);
+            /*
+            * changes the name in the tv to chosen user
+            * */
             drUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -83,7 +91,7 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                 public void onFailure(@NonNull Exception e) {
                     Log.d("TAG", "get failed with ", e);
                 }
-            });//changes the name in the tv to chosen user
+            });
         }
 
         findViewById(R.id.btCalander).setOnClickListener(new View.OnClickListener() {
@@ -92,7 +100,6 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                 showDatePickerDialog();
             }
         });
-        //Timestamp ts = new Timestamp(myEvent.getDate());
         /*fStore.collection("Event").whereArrayContains("date",ts).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -125,7 +132,7 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                     return;
                 }
                 myEvent.setDate(finalDate);
-                DocumentReference drUser = fStore.collection("User").document(thisUid);
+                DocumentReference drUser = fStore.collection("User").document(uid);
 
 
                 DocumentReference drNewEvent = fStore.collection("Event").document();
@@ -147,11 +154,14 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                             Log.d("TAG", "get failed with ", task.getException());
                         }
                     }
-                });//checks for the user
+                });//checks if user exists
                 Map<String, Object> userInfo = new HashMap<>();
                 userInfo.put("uid", myEvent.getUid());
                 userInfo.put("date", myEvent.getDate());
                 drNewEvent.set(userInfo);
+                Intent go = new Intent(Assign.this, ShiftActivity.class);
+                startActivity(go);
+                finish();
 
             }
         });
@@ -195,6 +205,9 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                         public void onClick(DialogInterface dialog, int which) {
                             Intent go = new Intent(getApplicationContext(), ChooseUser.class);
                             go.putExtra("fromAdmin", true);
+                            long num = ((getIntent().getLongExtra("date", 62419651056000L)));
+                            go.putExtra("date", num);
+                            Toast.makeText(getApplicationContext(), "the date" + new Date(dateNum).toString(), Toast.LENGTH_SHORT).show();
                             startActivity(go);
                             finish();
                         }
@@ -203,7 +216,7 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
 
 
                 }
-                //Timestamp ts = new Timestamp(myEvent.getDate());
+
                 //Log.d("TAG", ts.toString());
                 /*fStore.collection("Event")
                         .whereEqualTo("uid", thisUid)
@@ -222,7 +235,7 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                             }
                         });*/ //ths works, i get the timestamp by uid
             }
-        });
+        });//who do you want to assign
 
 
     }
