@@ -109,7 +109,7 @@ public class LoginTabFragment extends Fragment {
                     editor.putString("uid", uid);
                     editor.putBoolean("isAdmin", false);
                     editor.commit();
-                    Intent go = new Intent (getActivity(), Calendar.class);
+                    Intent go = new Intent (getActivity(), RegularUserActivity.class);
                     go.putExtra("uid", uid);
                     startActivity(go);
                     getActivity().finish();

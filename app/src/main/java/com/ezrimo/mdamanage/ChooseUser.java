@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,13 +36,12 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_user);
         Log.d("TAG", userRef.orderBy("isAdmin", Query.Direction.ASCENDING).toString());
-        Query query = userRef.orderBy("isAdmin", Query.Direction.ASCENDING);
         setUpRecView();
     }
 
     private void setUpRecView() {
         long date = getIntent().getLongExtra("date", 62419651056000L);
-        Query query = userRef.orderBy("email", Query.Direction.ASCENDING);
+        Query query = userRef.orderBy("email", Query.Direction.ASCENDING);//query of users for the recyclerview
         Log.d("TAG", query.toString());
         boolean fromAdmin = getIntent().getBooleanExtra("fromAdmin", false);
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
@@ -49,11 +49,18 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
                 .build();
         adapter = new UserAdapter(options);
         Log.d("TAG", "adapter");
+        /*
+         * set up for hte RecyclerView
+         */
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+
+        //security zone for admin only- only admins have the access to assign
         if(fromAdmin) {
+            Toast.makeText(getApplicationContext(), "to assign swipe left :)", Toast.LENGTH_SHORT).show();
+
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                     ItemTouchHelper.LEFT) {
                 @Override
@@ -61,6 +68,12 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
                     return false;
                 }
 
+
+                /**
+                 * when swiped assigns this user and goes back to Assign
+                 * @param viewHolder on wich item it was swiped
+                 * @param direction
+                 */
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                     Intent go = new Intent(getApplicationContext(), Assign.class);
@@ -74,6 +87,11 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
             }).attachToRecyclerView(recyclerView);
         }
         adapter.setOnclickItemListener(new UserAdapter.onItemClickListener() {
+            /**
+             * when clicked goes to user info
+             * @param documentSnapshot
+             * @param position not using
+             */
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 User user = documentSnapshot.toObject(User.class);
