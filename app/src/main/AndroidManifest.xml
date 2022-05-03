@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MDAmanage">
         <activity
+            android:name=".SuccessfullSU"
+            android:exported="true" />
+        <activity
             android:name=".ShiftActivity"
             android:exported="true" />
         <activity

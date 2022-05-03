@@ -25,8 +25,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-
 public class LoginTabFragment extends Fragment {
     Button loginButton;
     EditText email, password;
@@ -68,7 +66,7 @@ public class LoginTabFragment extends Fragment {
         });
         return root;
     }
-    /*
+    /**
     checks if fields are acceptable
     @par EditText
     @returns boolean
@@ -82,6 +80,11 @@ public class LoginTabFragment extends Fragment {
         }
         return valid;
     }
+
+    /**
+     * checks if its a admin and by the result refers to different activities
+     * @param uid
+     */
     public void isAdmin (String uid) {
         sp = getContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         DocumentReference dr = fStore.collection("User").document(uid);
@@ -115,27 +118,6 @@ public class LoginTabFragment extends Fragment {
                     getActivity().finish();
                 }
 
-
-                /*if(parseLong(usersMap.get("isAdmin").toString())==1){//for Users
-                    editor.putString("uid", uid);
-                    editor.putBoolean("isAdmin", true);
-                    editor.commit();
-                    Intent go = new Intent(getActivity(), adminActivity.class);
-                    go.putExtra("uid", uid);
-                    startActivity(go);
-                    getActivity().finish();
-                }
-
-                if (parseLong(usersMap.get("isAdmin").toString())==0){
-                    //user isnt an admin
-                    editor.putString("uid", uid);
-                    editor.putBoolean("isAdmin", false);
-                    editor.commit();
-                    Intent go = new Intent (getActivity(), Assign.class);
-                    go.putExtra("uid", uid);
-                    startActivity(go);
-                    getActivity().finish();
-                }*/
             }
         });
 

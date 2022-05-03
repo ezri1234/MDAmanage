@@ -22,6 +22,13 @@ public class Calendar extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
         calendarView = (CalendarView) findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            /**
+             * when a date is chosen you go to
+             * @param view
+             * @param year
+             * @param month
+             * @param dayOfMonth
+             */
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Date myDate = new Date(year, month, dayOfMonth);

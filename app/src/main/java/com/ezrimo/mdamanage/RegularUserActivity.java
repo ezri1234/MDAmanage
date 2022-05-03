@@ -37,6 +37,9 @@ public class RegularUserActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         user = new User(documentSnapshot.getString("fullName"), documentSnapshot.getString("email"), 0);
+                        Intent go = new Intent(RegularUserActivity.this, UserInfo.class);
+                        go.putExtra("user", user);
+                        startActivity(go);
                     }
                 });
 

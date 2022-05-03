@@ -75,8 +75,8 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
             myEvent.setUid(uid);
             DocumentReference drUser = fStore.collection("User").document(uid);
             /*
-            * changes the name in the tv to chosen user
-            * */
+            * changes the name in the TV to chosen user
+            */
             drUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -100,28 +100,7 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                 showDatePickerDialog();
             }
         });
-        /*fStore.collection("Event").whereArrayContains("date",ts).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                Map o = (Map) document.getData().get("Event");
-                                Timestamp ts = (Timestamp) o.get("date");
-                                if (ts.toString().equals("2/3/2022")) {
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
 
-                                }
-                            }
-                            Log.d(TAG, "");
-
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });*///checks for same date events
         btEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -214,26 +193,8 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                     });
                     alert.create().show();
 
-
                 }
 
-                //Log.d("TAG", ts.toString());
-                /*fStore.collection("Event")
-                        .whereEqualTo("uid", thisUid)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d("TAG", document.getId() + " => " + document.getData());
-                                    }
-                                } else {
-                                    Log.d("TAG", "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });*/ //ths works, i get the timestamp by uid
             }
         });//who do you want to assign
 

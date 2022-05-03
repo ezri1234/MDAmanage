@@ -71,8 +71,7 @@ public class SignUpTabFragment extends Fragment {
                             Map<String, Object> userInfo = new HashMap<>();
                             userInfo.put("fullName", generalUser.getFullName());
                             userInfo.put("email", generalUser.getEmail());
-                            /*userInfo.put("fullName", generalUser.getFullName());
-                            userInfo.put("password", password.getText().toString());*/
+
                             //here we will specify if its admin
                             if(generalUser.getIsAdmin()==1) {
                                 userInfo.put("isAdmin", 1);
@@ -83,7 +82,7 @@ public class SignUpTabFragment extends Fragment {
                             }else{
                                 userInfo.put("isAdmin", 0);
                                 dr.set(userInfo);
-                                Intent go = new Intent(root.getContext(), RegularUserActivity.class);
+                                Intent go = new Intent(root.getContext(), SuccessfullSU.class);
                                 startActivity(go);
                                 getActivity().finish();
                             }

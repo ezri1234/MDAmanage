@@ -35,11 +35,4 @@ public class SignInUpActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginB);
     }
 
-
-    /*protected void onStart() {
-        super.onStart();
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            startActivity(new Intent(getApplicationContext(), adminActivity.class));
-        }
-    }*/
 }
