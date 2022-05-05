@@ -71,8 +71,8 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
 
                 /**
                  * when swiped assigns this user and goes back to Assign
-                 * @param viewHolder on wich item it was swiped
-                 * @param direction
+                 * @param viewHolder on which item it was swiped
+                 * @param direction the direction it was swiped
                  */
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
@@ -89,7 +89,7 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
         adapter.setOnclickItemListener(new UserAdapter.onItemClickListener() {
             /**
              * when clicked goes to user info
-             * @param documentSnapshot
+             * @param documentSnapshot this user documentSnapshot
              * @param position not using
              */
             @Override
@@ -126,7 +126,7 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
                             .setQuery(query, User.class)
                             .build();
                     adapter.updateOptions(options);
-                } else {
+                } else {//getting query by typed sub String
                     Query query = userRef.whereGreaterThanOrEqualTo("fullName", editable.toString())
                             .whereLessThanOrEqualTo("fullName", editable.toString()+"\uF7FF")
                             .orderBy("fullName", Query.Direction.ASCENDING);
@@ -157,7 +157,7 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
         public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
             try {
                 super.onLayoutChildren(recycler, state);
-            } catch (IndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {//fixes a bug
                 Log.e("TAG", "meet a IOOBE in RecycleView");
             }
         }

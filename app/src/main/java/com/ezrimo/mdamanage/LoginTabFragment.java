@@ -44,10 +44,8 @@ public class LoginTabFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkField(email);
-                checkField(password);
 
-                if (valid){
+                if (checkField(email)&&checkField(password)){
                     fAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {

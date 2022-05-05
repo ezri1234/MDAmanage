@@ -63,7 +63,6 @@ public class UserInfo extends AppCompatActivity {
 
         fStore.collection("Event")
                 .whereEqualTo("uid", uid)
-                //.orderBy("date")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -104,15 +103,19 @@ public class UserInfo extends AppCompatActivity {
 
 
     }
-public static String LastShift(long[] arr){
-        Date today = Calendar.getInstance().getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date lastShift;
-        Arrays.sort(arr);
+
+    /**
+     * check if this user had a shift before today
+     * @param arr array of time converted to milliseconds
+     * @return a string of the date of the last shift
+     */
+    public static String LastShift(long[] arr){
+            Date today = Calendar.getInstance().getTime();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date lastShift;
+            Arrays.sort(arr);
             long date = today.getTime()/10000;
 
-            //Log.d("TAG", Long.toString(date));
-            //Log.d("TAG", Long.toString(arr[0]));
             if(arr.length==0||date<=arr[0]-5995815940l)
                 return "No Shifts Before Today";
             if(arr.length==1)
@@ -128,9 +131,14 @@ public static String LastShift(long[] arr){
                     return formatter.format(lastShift);
                 }
             }
-        return "not valid";
-}
+            return "not valid";
+    }
 
+    /**
+     * check if this user has a shift after today
+     * @param arr array of time converted to milliseconds
+     * @return a string of the date of next shift
+     */
     public static String nextShift(long[] arr){
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

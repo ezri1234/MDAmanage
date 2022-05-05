@@ -24,18 +24,18 @@ import java.util.HashMap;
 
 public class RecycleViewAdmin extends AppCompatActivity {
 
-    RecyclerView recyclerView;
+    /*RecyclerView recyclerView;
     ArrayList<User> userArrayList;
     RecycleAdapter myAdapter;
     FirebaseFirestore db;
-    ProgressDialog progressDialog;
+    ProgressDialog progressDialog;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycle_view_admin);
 
-        progressDialog = new ProgressDialog(this);
+        /*progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("getting data...");
         progressDialog.show();
@@ -85,5 +85,6 @@ public class RecycleViewAdmin extends AppCompatActivity {
                 });
 
 
+    }*/
     }
 }

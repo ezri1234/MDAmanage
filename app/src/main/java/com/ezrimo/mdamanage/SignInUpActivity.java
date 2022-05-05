@@ -1,10 +1,13 @@
 package com.ezrimo.mdamanage;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -35,4 +38,31 @@ public class SignInUpActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginB);
     }
 
+    /**
+     * setting the menu
+     * @param menu the menu
+     * @return if there is a menu returns true
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_item, menu);
+        return true;
+    }
+
+    /**
+     * going to th wanted activity
+     * @param item the item clicked on
+     * @return default
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if(itemId == R.id.metronome){
+            Intent go = new Intent(getApplicationContext(), Metronome.class);
+            startActivity(go);
+            finish();
+        }
+        return true;
+    }
 }

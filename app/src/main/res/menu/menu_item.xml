@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        app:showAsAction="always"
+        android:title=""
+        android:icon="@drawable/ic_more_vert"
+        >
+        <menu>
+            <item
+                android:id="@+id/loginUp"
+                android:icon="@drawable/ic_baseline_login_24"
+                android:title="Login Signup"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/metronome"
+                android:icon="@drawable/ic_baseline_timer_24"
+                android:title="Metronome"
+                app:showAsAction="never" />
+
+        </menu>
+    </item>
+
+
+</menu>

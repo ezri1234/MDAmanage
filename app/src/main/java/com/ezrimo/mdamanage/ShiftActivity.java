@@ -89,7 +89,11 @@ public class ShiftActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * returns the first empty TextView
+     * @param arr the TV used
+     * @return the integer if the first empty tv in the array
+     */
     public int smallestIsEmpty(TextView[]arr){
 
         for (int i = 0; i<arr.length;i++){
@@ -99,6 +103,11 @@ public class ShiftActivity extends AppCompatActivity {
         return -1;
     }
 
+    /**
+     * updates the names
+     * @param uid the wanted user uid
+     * @param arr the TextView array
+     */
     public void updateNames(String uid, TextView[]arr){
 
         fStore.collection("User")
@@ -135,8 +144,9 @@ public class ShiftActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param view
+     *if Admin it lets him assign any user to this shift
+     * it is the same for the 3 shifts, just different TextViews
+     * @param view what button was clicked
      */
     public void shift2(View view) {
         TextView tv = (TextView)view;
@@ -148,8 +158,9 @@ public class ShiftActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param view
+     *if Admin it lets him assign any user to this shift
+     *it is the same for the 3 shifts, just different TextViews
+     * @param view what button was clicked
      */
     public void shift3(View view) {
         TextView tv = (TextView)view;
@@ -160,6 +171,9 @@ public class ShiftActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * goes to assign activity and sends the wanted data
+     */
     public void assignShift(){
         long dateInMilli = getIntent().getLongExtra("date", 62419651056000l);
         Intent go = new Intent(ShiftActivity.this, Assign.class);

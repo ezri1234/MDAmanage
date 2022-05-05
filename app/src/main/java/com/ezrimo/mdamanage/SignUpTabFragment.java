@@ -50,9 +50,13 @@ public class SignUpTabFragment extends Fragment {
                 checkField(fullName);
                 checkField(type);
                 checkField(password);
-                User generalUser = new User(fullName.getText().toString(), email.getText().toString(), parseLong(type.getText().toString()));
+
+                if(!(checkField(email)||checkField(fullName)||checkField(type)||checkField(password))){
+                    valid = false;
+                    return;
+                }
                 isAdmin=false;
-                if(!(type.getText().toString().equals("1")||type.getText().toString().equals("0"))){
+                if(!(type.getText().toString().equals("1")||type.getText().toString().equals("0"))){//if not equal to 1||0
                     Toast.makeText(getContext(), "enter only 1 or 0", Toast.LENGTH_SHORT).show();
                     type.setError("Error");
                     valid=false;
@@ -61,7 +65,8 @@ public class SignUpTabFragment extends Fragment {
                 if(type.getText().toString().equals("1"))
                     isAdmin = true;
 
-                if(valid){
+                if(valid){//if all the inputs are valid
+                    User generalUser = new User(fullName.getText().toString(), email.getText().toString(), parseLong(type.getText().toString()));//creating local User
                     fAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
@@ -72,7 +77,7 @@ public class SignUpTabFragment extends Fragment {
                             userInfo.put("fullName", generalUser.getFullName());
                             userInfo.put("email", generalUser.getEmail());
 
-                            //here we will specify if its admin
+                            //here we will specify if it's an admin
                             if(generalUser.getIsAdmin()==1) {
                                 userInfo.put("isAdmin", 1);
                                 dr.set(userInfo);
@@ -92,15 +97,20 @@ public class SignUpTabFragment extends Fragment {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(root.getContext(), "failed to create account", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(root.getContext(), "failed to create account- "+e.toString(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
             }
         });
-
         return root;
     }
+
+    /**
+     * validates fields
+     * @param textField input
+     * @return if the field is valid t/f
+     */
     public boolean checkField(EditText textField){
         if(textField.getText().toString().isEmpty()){
             textField.setError("Error");

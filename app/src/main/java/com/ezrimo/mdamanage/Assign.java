@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Assign extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class Assign extends AppCompatActivity  {
     TextView date, name;
     Button btEnter, btAssign;
     Date finalDate = null;
@@ -54,14 +54,14 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
         btEnter = findViewById(R.id.btEnter);
         btAssign = findViewById(R.id.assign);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//reformatting the date
         SharedPreferences sr = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         boolean isAdmin = sr.getBoolean("isAdmin", false);
         String thisUid = sr.getString("uid", "");
         Event myEvent = new Event(finalDate, thisUid);
 
-        String uid = getIntent().getStringExtra("uid");
-        chosenUid = getIntent().getBooleanExtra("chosenUid", false);
+        String uid = getIntent().getStringExtra("uid");//my uid
+        chosenUid = getIntent().getBooleanExtra("chosenUid", false);//if we want to assign other user uid
         long dateNum = ((getIntent().getLongExtra("date", 62419651056000L)) - 59958159400001L) + 86400000L;
         Date thisDate = new Date(dateNum);
         date.setText(formatter.format(thisDate));
@@ -94,30 +94,25 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
             });
         }
 
-        findViewById(R.id.btCalander).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog();
-            }
-        });
-
+        /**
+         * gets the chosen date and user and updates it as a new event in FireStore
+         */
         btEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (date.getText().equals("")) {
+                if (date.getText().equals("")) {//if the date is empty
                     Log.d("TAG", "empty");
                     date.setError("no Date selected");
                     return;
                 }
-                myEvent.setDate(finalDate);
+                myEvent.setDate(finalDate);//updating date
                 DocumentReference drUser = fStore.collection("User").document(uid);
 
 
                 DocumentReference drNewEvent = fStore.collection("Event").document();
 
 
-                drUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                drUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {//checks if the user exists
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -137,7 +132,7 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
                 Map<String, Object> userInfo = new HashMap<>();
                 userInfo.put("uid", myEvent.getUid());
                 userInfo.put("date", myEvent.getDate());
-                drNewEvent.set(userInfo);
+                drNewEvent.set(userInfo);//setting the event
                 Intent go = new Intent(Assign.this, ShiftActivity.class);
                 startActivity(go);
                 finish();
@@ -145,6 +140,9 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
             }
         });
 
+        /**
+         * choose the user
+         */
         btAssign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -198,27 +196,6 @@ public class Assign extends AppCompatActivity implements DatePickerDialog.OnDate
             }
         });//who do you want to assign
 
-
-    }
-
-    private void showDatePickerDialog() {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                this,
-                Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.DATE),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        );
-        datePickerDialog.show();
-
-    }
-
-    @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        String chosenDate = " " + (i2) + "/" + (i1) + "/" + (i);
-        date.setText(chosenDate);
-        finalDate = new Date(i, i1, i2);
-        Toast.makeText(this, finalDate.toString(), Toast.LENGTH_SHORT).show();
     }
 
 }

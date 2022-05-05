@@ -23,17 +23,17 @@ public class Calendar extends AppCompatActivity {
         calendarView = (CalendarView) findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             /**
-             * when a date is chosen you go to
-             * @param view
-             * @param year
-             * @param month
-             * @param dayOfMonth
+             * when a date is chosen you go to shift page there you can assign a user
+             * @param view this
+             * @param year chosen year
+             * @param month chosen month
+             * @param dayOfMonth chosen day of month
              */
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Date myDate = new Date(year, month, dayOfMonth);
                 Intent go = new Intent(Calendar.this, ShiftActivity.class);
-                go.putExtra("date", myDate.getTime());
+                go.putExtra("date", myDate.getTime());//sending the date to the next Activity
                 startActivity(go);
             }
         });
