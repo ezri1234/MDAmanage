@@ -18,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegularUserActivity extends AppCompatActivity {
     Button logout;
-    Button myInfo;
+    Button myInfo, calendar;
     User user=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class RegularUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_regular_user);
         logout = findViewById(R.id.logoutUser);
         myInfo = findViewById(R.id.myInfo);
+        calendar = findViewById(R.id.calender);
 
         myInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +47,13 @@ public class RegularUserActivity extends AppCompatActivity {
             }
         });
 
-
+        calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent go = new Intent(getApplicationContext(), Calendar.class);
+                startActivity(go);
+            }
+        });
 
     }
 

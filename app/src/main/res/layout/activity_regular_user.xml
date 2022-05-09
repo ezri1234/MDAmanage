@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.626" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/calender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="calendar"

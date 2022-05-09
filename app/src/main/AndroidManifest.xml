@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ezrimo.mdamanage">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,9 +21,6 @@
             android:exported="true" />
         <activity
             android:name=".Calendar"
-            android:exported="true" />
-        <activity
-            android:name=".calendar"
             android:exported="true" />
         <activity
             android:name=".UserInfo"
@@ -55,6 +53,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".MyServiceActivity"></service>
     </application>
 
 </manifest>
