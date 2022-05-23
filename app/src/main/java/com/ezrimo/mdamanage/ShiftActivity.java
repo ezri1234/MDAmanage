@@ -24,6 +24,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.time.LocalDate;
 import java.util.Date;
 
+/**
+ * The type Shift activity.
+ */
 public class ShiftActivity extends AppCompatActivity {
     protected static TextView [] places;
     protected static FirebaseFirestore fStore;
@@ -91,6 +94,7 @@ public class ShiftActivity extends AppCompatActivity {
 
     /**
      * returns the first empty TextView
+     *
      * @param arr the TV used
      * @return the integer if the first empty tv in the array
      */
@@ -105,6 +109,7 @@ public class ShiftActivity extends AppCompatActivity {
 
     /**
      * updates the names
+     *
      * @param uid the wanted user uid
      * @param arr the TextView array
      */
@@ -128,10 +133,12 @@ public class ShiftActivity extends AppCompatActivity {
             }
         });
     }
+
     /**
      * if Admin it lets him assign any user to this shift
      * it is the same for the 3 shifts, just different TextViews
-     *@param view, what button was clicked
+     *
+     * @param view the view
      */
     public void shift1(View view) {
 
@@ -144,8 +151,9 @@ public class ShiftActivity extends AppCompatActivity {
     }
 
     /**
-     *if Admin it lets him assign any user to this shift
+     * if Admin it lets him assign any user to this shift
      * it is the same for the 3 shifts, just different TextViews
+     *
      * @param view what button was clicked
      */
     public void shift2(View view) {

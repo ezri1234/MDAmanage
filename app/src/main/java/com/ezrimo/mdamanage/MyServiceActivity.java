@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 
@@ -12,10 +13,11 @@ import androidx.annotation.Nullable;
 
 public class MyServiceActivity extends Service {
     MediaPlayer player;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(player==null)
-            player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
+
+        player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
         player.setLooping(true);
         player.start();
 
@@ -26,11 +28,12 @@ public class MyServiceActivity extends Service {
                 NotificationManager.IMPORTANCE_LOW
         );
         getSystemService(NotificationManager.class).createNotificationChannel(channel);
-        Notification.Builder notification = new Notification.Builder(this, CHANNEL_ID)
+        Notification notification = new Notification.Builder(this, CHANNEL_ID)
                 .setContentText("Metronome Running")
                 .setContentTitle("MDA Manage")
-                .setSmallIcon(R.drawable.mdaman);
-        startForeground(1001, notification.build());
+                .setSmallIcon(R.drawable.mdaman)
+                .build();
+        startForeground(1001, notification);
         return super.onStartCommand(intent, flags, startId);
     }
 
