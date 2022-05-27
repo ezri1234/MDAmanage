@@ -3,6 +3,7 @@ package com.ezrimo.mdamanage;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,15 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.protobuf.StringValue;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Metronome extends AppCompatActivity {
     Button metronome;
-    MediaPlayer player;
-    int counter=0;
-    //private Handler myHandler = new Handler();
-    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +34,10 @@ public class Metronome extends AppCompatActivity {
         Intent serviceIntent = new Intent(getApplicationContext(), MyServiceActivity.class);
 
         metronome.setOnClickListener(new View.OnClickListener() {
+            /**
+             * if the service is not running he start the service, if its running it kills it
+             * @param v the button in type View
+             */
             @Override
             public void onClick(View v) {
                 /*if(counter%2==0){
@@ -48,19 +51,29 @@ public class Metronome extends AppCompatActivity {
                     player.pause();
                     counter=0;
                 }*/
-                SharedPreferences sr = getApplicationContext().getSharedPreferences("isRunning", Context.MODE_PRIVATE);
+                /*SharedPreferences sr = getApplicationContext().getSharedPreferences("isRunning", Context.MODE_PRIVATE);
                 boolean isPlaying = sr.getBoolean("isPlaying", false);
+                Log.d("TAG", String.valueOf(isPlaying));
                 if(!isPlaying){
                     startService(serviceIntent);
-                    sp = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
+                    sp = getApplicationContext().getSharedPreferences("isRunning", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putBoolean("isPlaying", true);
                     editor.commit();
 
-
                 } else{
+                    Log.d("TAG", "stopping");
                     stopService(serviceIntent);
-                }
+                    sp = getApplicationContext().getSharedPreferences("isRunning", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putBoolean("isPlaying", false);
+                    editor.commit();
+                }*/
+                if(!isMyServiceRunning(MyServiceActivity.class)){
+                    startService(serviceIntent);
+                    Log.d("TAG", "no service");
+                } else if(isMyServiceRunning(MyServiceActivity.class))
+                    stopService(serviceIntent);
             }
         });
 
@@ -82,6 +95,21 @@ public class Metronome extends AppCompatActivity {
             finish();
         }
         return true;
+    }
+
+    /**
+     * checks if service is running
+     * @param serviceClass type of the service you're looking for
+     * @return if service is running
+     */
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -40,8 +40,10 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
     }
 
     private void setUpRecView() {
+        //chosen date
         long date = getIntent().getLongExtra("date", 62419651056000L);
-        Query query = userRef.orderBy("email", Query.Direction.ASCENDING);//query of users for the recyclerview
+        //query of users for the recyclerview
+        Query query = userRef.orderBy("email", Query.Direction.ASCENDING);
         Log.d("TAG", query.toString());
         boolean fromAdmin = getIntent().getBooleanExtra("fromAdmin", false);
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
@@ -50,7 +52,7 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
         adapter = new UserAdapter(options);
         Log.d("TAG", "adapter");
         /*
-         * set up for hte RecyclerView
+         * set up for the RecyclerView
          */
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recview);
         recyclerView.setHasFixedSize(true);

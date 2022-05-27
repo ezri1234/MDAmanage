@@ -51,7 +51,7 @@ public class adminActivity extends AppCompatActivity {
      * @param view the calendar Button
      */
     public void Calendar(View view) {
-        Intent go = new Intent(getApplicationContext(), Calendar.class);//for now assign but it will go to calendar
+        Intent go = new Intent(getApplicationContext(), Calendar.class);
         go.putExtra("uid", uid);
         startActivity(go);
     }

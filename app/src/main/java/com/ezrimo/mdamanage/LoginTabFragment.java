@@ -32,36 +32,38 @@ public class LoginTabFragment extends Fragment {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     SharedPreferences sp;
+    float v = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.login_tab_fragment, container, false);
+        //initialization of my variables
         loginButton = root.findViewById(R.id.loginB);
         email = root.findViewById(R.id.email);
         password = root.findViewById(R.id.password);
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        loginButton.setOnClickListener(view -> {
+            if (checkField(email)&&checkField(password)){
+                fAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnSuccessListener(authResult -> {
+                    Toast.makeText(getContext(), "logged in successfully", Toast.LENGTH_SHORT).show();
+                    isAdmin(authResult.getUser().getUid());
+                }).addOnFailureListener(e -> Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
 
-                if (checkField(email)&&checkField(password)){
-                    fAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
-                            Toast.makeText(getContext(), "logged in successfully", Toast.LENGTH_SHORT).show();
-                            isAdmin(authResult.getUser().getUid());
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                }
             }
         });
+        //animation
+        email.setTranslationX(800);
+        password.setTranslationX(800);
+        loginButton.setTranslationX(800);
+
+        email.setAlpha(v);
+        password.setAlpha(v);
+        loginButton.setAlpha(v);
+
+        email.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(300).start();
+        password.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
+        loginButton.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(700).start();
         return root;
     }
     /**
@@ -90,9 +92,8 @@ public class LoginTabFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("TAG", "on success " + documentSnapshot.getData());
-                //HashMap<String, Object> usersMap = (HashMap<String, Object>) documentSnapshot.getData().get("Users");
-                //Log.d("TAG", usersMap.get("fullName").toString());
                 Log.d("TAG", documentSnapshot.get("fullName").toString());
+                //setting a SP editor
                 SharedPreferences.Editor editor = sp.edit();
 
                 if(parseLong(documentSnapshot.get("isAdmin").toString())==1) {

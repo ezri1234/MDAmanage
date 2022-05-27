@@ -1,18 +1,17 @@
 package com.ezrimo.mdamanage;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.UserHolder>{
@@ -40,7 +39,7 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
     public void deleteItem(int position){
         getSnapshots().getSnapshot(position).getReference().delete();
     }
-
+    //returns UId of this user
     public String getUid(int position){
         return getSnapshots().getSnapshot(position).getId();
     }
@@ -53,12 +52,13 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
             tvUserName = itemView.findViewById(R.id.fullName);
             tvEmail = itemView.findViewById(R.id.email);
             tvIsAdmin = itemView.findViewById(R.id.isAdmin);
-
+            //When Specific User In RecyclerView Is Clicked
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION && listener!=null){
+                        //calls onItemClick (in my case it's defined in ChooseUser)
                         listener.onItemClick(getSnapshots().getSnapshot(position), position);
                     }
 
@@ -68,12 +68,12 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
         }
     }
 
+    //making interface so this method will be more global
     public interface onItemClickListener{
         void onItemClick(DocumentSnapshot documentSnapshot, int position);
     }
 
     public void setOnclickItemListener(onItemClickListener listener){
-
         this.listener =listener;
     }
 }

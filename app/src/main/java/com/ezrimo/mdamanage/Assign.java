@@ -48,21 +48,26 @@ public class Assign extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assign);
+        //initialization of my variables
         fStore = FirebaseFirestore.getInstance();
         name = findViewById(R.id.tvName);
         date = findViewById(R.id.date);
         btEnter = findViewById(R.id.btEnter);
         btAssign = findViewById(R.id.assign);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//reformatting the date
+        //reformatting the date
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         SharedPreferences sr = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         boolean isAdmin = sr.getBoolean("isAdmin", false);
         String thisUid = sr.getString("uid", "");
         Event myEvent = new Event(finalDate, thisUid);
 
         String uid = getIntent().getStringExtra("uid");//my uid
-        chosenUid = getIntent().getBooleanExtra("chosenUid", false);//if we want to assign other user uid
         long dateNum = ((getIntent().getLongExtra("date", 62419651056000L)) - 59958159400001L) + 86400000L;
+
+        //if we want to assign other user uid
+        chosenUid = getIntent().getBooleanExtra("chosenUid", false);
+
         Date thisDate = new Date(dateNum);
         date.setText(formatter.format(thisDate));
         finalDate = new Date(getIntent().getLongExtra("date", 62419651056000L));
@@ -70,7 +75,8 @@ public class Assign extends AppCompatActivity  {
         Log.d("TAG", thisUid);
         Log.d("TAG", uid);
 
-        if(chosenUid)//if we got back from choosing
+        //if we got back from choosing
+        if(chosenUid)
         {
             myEvent.setUid(uid);
             DocumentReference drUser = fStore.collection("User").document(uid);
@@ -100,19 +106,18 @@ public class Assign extends AppCompatActivity  {
         btEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (date.getText().equals("")) {//if the date is empty
+                //if the date is empty
+                if (date.getText().equals("")) {
                     Log.d("TAG", "empty");
                     date.setError("no Date selected");
                     return;
                 }
-                myEvent.setDate(finalDate);//updating date
+                //updating date
+                myEvent.setDate(finalDate);
+
+                //checks if the user exists
                 DocumentReference drUser = fStore.collection("User").document(uid);
-
-
-                DocumentReference drNewEvent = fStore.collection("Event").document();
-
-
-                drUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {//checks if the user exists
+                drUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -129,10 +134,14 @@ public class Assign extends AppCompatActivity  {
                         }
                     }
                 });//checks if user exists
+
+                DocumentReference drNewEvent = fStore.collection("Event").document();
                 Map<String, Object> userInfo = new HashMap<>();
-                userInfo.put("uid", myEvent.getUid());
-                userInfo.put("date", myEvent.getDate());
-                drNewEvent.set(userInfo);//setting the event
+                userInfo.put("uid", myEvent.getUid());//setting uid field
+                userInfo.put("date", myEvent.getDate());//setting date field
+
+                //setting the event
+                drNewEvent.set(userInfo);
                 Intent go = new Intent(Assign.this, ShiftActivity.class);
                 startActivity(go);
                 finish();
@@ -141,14 +150,13 @@ public class Assign extends AppCompatActivity  {
         });
 
         /**
-         * choose the user
+         * who does the user wanna Assign- himself or another user?
          */
         btAssign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isAdmin) {
                     myEvent.setUid(thisUid);
-
                 } else {
                     AlertDialog.Builder alert = new AlertDialog.Builder(Assign.this);
                     alert.setTitle("Choose");
@@ -160,6 +168,10 @@ public class Assign extends AppCompatActivity  {
                             DocumentReference drUser = fStore.collection("User").document(thisUid);
                             drUser.get()
                                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        /**
+                                         * setting this user tp assigning
+                                         * @param documentSnapshot this user Document from FireStore
+                                         */
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                                             if(documentSnapshot.exists()){
@@ -169,6 +181,7 @@ public class Assign extends AppCompatActivity  {
                                             }
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
+                                //letting the user theres an error
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Log.d("TAG", "get failed with ", e);
@@ -176,7 +189,9 @@ public class Assign extends AppCompatActivity  {
                             });
                         }
                     });
-
+                    /**
+                     * going to choose user with added data
+                     */
                     alert.setNegativeButton("Users", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

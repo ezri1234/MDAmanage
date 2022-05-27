@@ -13,10 +13,8 @@ import androidx.annotation.Nullable;
 
 public class MyServiceActivity extends Service {
     MediaPlayer player;
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
         player.setLooping(true);
         player.start();
@@ -27,9 +25,10 @@ public class MyServiceActivity extends Service {
                 CHANNEL_ID,
                 NotificationManager.IMPORTANCE_LOW
         );
+        //creating the Notification
         getSystemService(NotificationManager.class).createNotificationChannel(channel);
         Notification notification = new Notification.Builder(this, CHANNEL_ID)
-                .setContentText("Metronome Running")
+                .setContentText("Metronome Is Running")
                 .setContentTitle("MDA Manage")
                 .setSmallIcon(R.drawable.mdaman)
                 .build();
@@ -41,5 +40,16 @@ public class MyServiceActivity extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        //deleting the Media player
+        if(player.isPlaying()){
+            player.stop();
+            player.release();
+            player = null;
+        }
+        super.onDestroy();
     }
 }

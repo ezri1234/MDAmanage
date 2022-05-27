@@ -31,6 +31,8 @@ public class SignUpTabFragment extends Fragment {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     boolean valid, isAdmin;
+    float v = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.singup_tab_fragment, container, false);
@@ -55,7 +57,9 @@ public class SignUpTabFragment extends Fragment {
                     valid = false;
                     return;
                 }
+
                 isAdmin=false;
+
                 if(!(type.getText().toString().equals("1")||type.getText().toString().equals("0"))){//if not equal to 1||0
                     Toast.makeText(getContext(), "enter only 1 or 0", Toast.LENGTH_SHORT).show();
                     type.setError("Error");
@@ -73,6 +77,7 @@ public class SignUpTabFragment extends Fragment {
                             FirebaseUser user = fAuth.getCurrentUser();
                             DocumentReference dr = fStore.collection("User").document(user.getUid());
                             Toast.makeText(root.getContext(), "signed up success", Toast.LENGTH_SHORT).show();
+                            //creating Map to input it to FireStore
                             Map<String, Object> userInfo = new HashMap<>();
                             userInfo.put("fullName", generalUser.getFullName());
                             userInfo.put("email", generalUser.getEmail());
@@ -80,17 +85,16 @@ public class SignUpTabFragment extends Fragment {
                             //here we will specify if it's an admin
                             if(generalUser.getIsAdmin()==1) {
                                 userInfo.put("isAdmin", 1);
-                                dr.set(userInfo);
+                                dr.set(userInfo); //setting the data
                                 Intent go = new Intent(root.getContext(), adminActivity.class);
                                 startActivity(go);
-                                getActivity().finish();
                             }else{
                                 userInfo.put("isAdmin", 0);
-                                dr.set(userInfo);
+                                dr.set(userInfo); //setting the data
                                 Intent go = new Intent(root.getContext(), SuccessfullSU.class);
                                 startActivity(go);
-                                getActivity().finish();
                             }
+                            getActivity().finish();
 
 
                         }
@@ -103,13 +107,33 @@ public class SignUpTabFragment extends Fragment {
                 }
             }
         });
+
+        /*email.setTranslationX(800);
+        password.setTranslationX(800);
+        fullName.setTranslationX(800);
+        type.setTranslationX(800);
+        signupButton.setTranslationX(800);
+
+        email.setAlpha(v);
+        password.setAlpha(v);
+        fullName.setAlpha(v);
+        type.setAlpha(v);
+        signupButton.setAlpha(v);
+
+        email.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(300).start();
+        fullName.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
+        type.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(700).start();
+        password.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(900).start();
+        signupButton.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(900).start();*///animation
+
+
         return root;
     }
 
     /**
      * validates fields
      * @param textField input
-     * @return if the field is valid t/f
+     * @return if the field is valid- t. if not valid- f.
      */
     public boolean checkField(EditText textField){
         if(textField.getText().toString().isEmpty()){

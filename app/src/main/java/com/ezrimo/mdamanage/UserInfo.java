@@ -51,6 +51,7 @@ public class UserInfo extends AppCompatActivity {
 
 
         uid = getIntent().getStringExtra("uid");
+        //chosen user info
         User user = getIntent().getParcelableExtra("user");
         Toast.makeText(getApplicationContext(), user.getFullName(), Toast.LENGTH_SHORT).show();
 
@@ -67,41 +68,46 @@ public class UserInfo extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        //Log.d("TAG", "random");
+                        //if task is successful it updates the last/upcoming shifts, and number of shifts
                         if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot document : task.getResult()){//getting how much date are there
-                                //Log.d("TAG", document.getData().toString());
+                            //getting how much date are there
+                            for(QueryDocumentSnapshot document : task.getResult()){
                                 count++;
                             }
 
                             dArray = new Date[count];
                             int i = 0;
                             for(QueryDocumentSnapshot document1 : task.getResult()){
+                                //getting all shifts this user has, and will have
                                 dArray[i] = new Date(document1.getTimestamp("date").toDate().getTime());
                                 Log.d("TAG", dArray[i].toString());
                                 i++;
                             }
                             Log.d("TAG", Integer.toString(count));
+
+                            //setting the TV of how many shift this user is did + is going to have
                             numberOfShifts.setText(Integer.toString(count));
                             long intTime[] = new long[count];
                             for(int k = 0; k<intTime.length; k++){
-                                intTime[k] = dArray[k].getTime()/10000;
+
+                                intTime[k] = dArray[k].getTime()/10000;//easier to work with smaller numbers
                                 Log.d("TAG", Long.toString(intTime[k]));
                             }
                             Log.d("TAG", "random");
+                            //sorting the array so i could search on it faster
                             Arrays.sort(intTime);
-                            for(int j = 0; j<intTime.length; j++){
+                            /*for(int j = 0; j<intTime.length; j++){
                                 Log.d("TAG", Long.toString(intTime[j]));
-                            }
+                            }*/
+                            //setting the last shift tv
                             lastShift.setText(LastShift(intTime));
+                            //setting next shift tv
                             nextShift.setText(nextShift(intTime));
                         }else {
                             Log.d("TAG", task.getException().toString());
                         }
                     }
                 });
-
-
     }
 
     /**

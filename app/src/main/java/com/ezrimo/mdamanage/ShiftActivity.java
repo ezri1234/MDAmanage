@@ -21,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.time.LocalDate;
+
 import java.util.Date;
 
 /**
@@ -31,7 +31,6 @@ public class ShiftActivity extends AppCompatActivity {
     protected static TextView [] places;
     protected static FirebaseFirestore fStore;
     int numOfU;
-    boolean flag = false;
 
     /**
      * in this activity the user can see who's in this dates shift.
@@ -184,10 +183,12 @@ public class ShiftActivity extends AppCompatActivity {
      */
     public void assignShift(){
         long dateInMilli = getIntent().getLongExtra("date", 62419651056000l);
-        Intent go = new Intent(ShiftActivity.this, Assign.class);
+
         SharedPreferences sr = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         boolean isAdmin = sr.getBoolean("isAdmin", false);
         String thisUid = sr.getString("uid", "");
+
+        Intent go = new Intent(ShiftActivity.this, Assign.class);
         go.putExtra("date", dateInMilli);
         go.putExtra("uid", thisUid);
         startActivity(go);

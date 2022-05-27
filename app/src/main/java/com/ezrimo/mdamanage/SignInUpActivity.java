@@ -19,6 +19,7 @@ public class SignInUpActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     Button loginButton, signupButton;
+    float v = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +37,10 @@ public class SignInUpActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener( new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         signupButton = findViewById(R.id.signupB);
         loginButton = findViewById(R.id.loginB);
+
+        tabLayout.setTranslationY(300);
+        tabLayout.setAlpha(v);
+        tabLayout.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(100).start();
     }
 
     /**
