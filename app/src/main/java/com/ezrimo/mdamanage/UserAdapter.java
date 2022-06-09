@@ -20,7 +20,12 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
     public UserAdapter(@NonNull FirestoreRecyclerOptions<User> options) {
         super(options);
     }
-
+    /**
+     * setting the data on an RecyclerView item
+     * @param holder User holder that was created
+     * @param position the position of the item that we want to change
+     * @param model the Data that comes from FireStore comes as User object
+     */
     @Override
     protected void onBindViewHolder(@NonNull UserHolder holder, int position, @NonNull User model) {
         holder.tvUserName.setText(model.getFullName());
@@ -28,6 +33,12 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
         holder.tvEmail.setText(model.getEmail());
     }
 
+    /**
+     * create an item on RecyclerView without the data form FireBase
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public UserHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,15 +46,17 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
                 parent, false);
         return new UserHolder(v);
     }
-
+    //deletes User from database
     public void deleteItem(int position){
         getSnapshots().getSnapshot(position).getReference().delete();
     }
-    //returns UId of this user
+
+    //returns UID of this user
     public String getUid(int position){
         return getSnapshots().getSnapshot(position).getId();
     }
 
+    //User Holder handles specific item
     class UserHolder extends RecyclerView.ViewHolder{
         TextView tvUserName, tvEmail, tvIsAdmin;
 
@@ -52,7 +65,7 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
             tvUserName = itemView.findViewById(R.id.fullName);
             tvEmail = itemView.findViewById(R.id.email);
             tvIsAdmin = itemView.findViewById(R.id.isAdmin);
-            //When Specific User In RecyclerView Is Clicked
+            //When Specific Item In RecyclerView Is Clicked
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

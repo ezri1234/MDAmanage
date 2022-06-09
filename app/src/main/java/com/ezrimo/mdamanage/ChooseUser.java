@@ -40,17 +40,16 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
     }
 
     private void setUpRecView() {
-        //chosen date
+        //chosen date if comes from Assign
         long date = getIntent().getLongExtra("date", 62419651056000L);
+
+        boolean fromAdmin = getIntent().getBooleanExtra("fromAdmin", false);
         //query of users for the recyclerview
         Query query = userRef.orderBy("email", Query.Direction.ASCENDING);
-        Log.d("TAG", query.toString());
-        boolean fromAdmin = getIntent().getBooleanExtra("fromAdmin", false);
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, User.class)
                 .build();
         adapter = new UserAdapter(options);
-        Log.d("TAG", "adapter");
         /*
          * set up for the RecyclerView
          */
@@ -69,7 +68,6 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
                 public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                     return false;
                 }
-
 
                 /**
                  * when swiped assigns this user and goes back to Assign
@@ -92,7 +90,7 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
             /**
              * when clicked goes to user info
              * @param documentSnapshot this user documentSnapshot
-             * @param position not using
+             * @param position
              */
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
@@ -128,9 +126,10 @@ public class ChooseUser extends AppCompatActivity implements UserAdapter.onItemC
                             .setQuery(query, User.class)
                             .build();
                     adapter.updateOptions(options);
-                } else {//getting query by typed sub String
+                } else {
+                    //getting query by typed sub String
                     Query query = userRef.whereGreaterThanOrEqualTo("fullName", editable.toString())
-                            .whereLessThanOrEqualTo("fullName", editable.toString()+"\uF7FF")
+                            .whereLessThanOrEqualTo("fullName", editable.toString()+"\uF7FF")//gives as all corresponding document that have the subString that is Typed
                             .orderBy("fullName", Query.Direction.ASCENDING);
                     FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                             .setQuery(query, User.class)
